@@ -25,6 +25,14 @@ public class CouponController {
     @Autowired
     private CouponService couponService;
 
+
+    @RequestMapping("/member/coupons")
+    public R memberCoupons(){
+        CouponEntity couponEntity = new CouponEntity();
+        couponEntity.setCouponName("满减");
+        return R.ok().put("coupons", couponEntity);
+    }
+
     /**
      * 列表
      */

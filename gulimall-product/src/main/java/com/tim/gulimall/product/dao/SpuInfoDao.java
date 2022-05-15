@@ -1,7 +1,7 @@
 package com.tim.gulimall.product.dao;
 
-import com.tim.gulimall.product.entity.SpuInfoEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tim.gulimall.product.entity.SpuInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

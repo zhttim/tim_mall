@@ -1,7 +1,7 @@
 package com.tim.gulimall.ware.dao;
 
-import com.tim.gulimall.ware.entity.UndoLogEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tim.gulimall.ware.entity.UndoLogEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

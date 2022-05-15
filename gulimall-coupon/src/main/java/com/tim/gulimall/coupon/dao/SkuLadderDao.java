@@ -1,7 +1,7 @@
 package com.tim.gulimall.coupon.dao;
 
-import com.tim.gulimall.coupon.entity.SkuLadderEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tim.gulimall.coupon.entity.SkuLadderEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
