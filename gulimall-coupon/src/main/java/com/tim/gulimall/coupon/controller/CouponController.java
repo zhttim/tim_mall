@@ -5,20 +5,22 @@ import com.tim.common.utils.R;
 import com.tim.gulimall.coupon.entity.CouponEntity;
 import com.tim.gulimall.coupon.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Map;
 
 
-
 /**
  * 优惠券信息
  *
  * @author tim
- * @email 
+ * @email
  * @date 2022-05-12 19:25:04
  */
+
+@RefreshScope
 @RestController
 @RequestMapping("coupon/coupon")
 public class CouponController {
@@ -27,7 +29,7 @@ public class CouponController {
 
 
     @RequestMapping("/member/coupons")
-    public R memberCoupons(){
+    public R memberCoupons() {
         CouponEntity couponEntity = new CouponEntity();
         couponEntity.setCouponName("满减");
         return R.ok().put("coupons", couponEntity);
