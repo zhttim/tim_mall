@@ -5,6 +5,7 @@
     :props="defaultProps"
     :expand-on-click-node="false"
     show-checkbox
+    node-key="catId"
   >
     <span class="custom-tree-node" slot-scope="{ node, data }">
       <span>{{ node.label }}</span>
