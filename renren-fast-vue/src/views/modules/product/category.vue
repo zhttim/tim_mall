@@ -8,6 +8,8 @@
       show-checkbox
       node-key="catId"
       :default-expanded-keys="expandedKey"
+      draggable
+      :allow-drop="allowDrop"
     >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
@@ -71,6 +73,7 @@ export default {
   components: {},
   data() {
     return {
+      maxLevel: 0,
       title: "",
       dialogType: "",
       category: {
@@ -218,6 +221,27 @@ export default {
           });
         });
       console.log("remove", node, data);
+    },
+    allowDrop(draggingNode, dropNode, type) {
+      //被拖动的当前节点层数
+      console.log("allowDrop", draggingNode, dropNode, type);
+      this.countNodeLevel(draggingNode.data);
+      let deep = this.maxLevel - draggingNode.data.catLevel + 1;
+      if(type =="inner"){
+        return (deep + dropNode.level) <=3;
+      }else{
+        return (deep + dropNode.parent.level) <= 3;
+      }
+    },
+    countNodeLevel(node) {
+      if (node.children != null && node.children.length > 0) {
+        for (let i = 0; i < node.children.length; i++) {
+          if (node.children[i].catLevel > this.maxLevel) {
+            this.maxLevel = node.children[i].catLevel;
+          }
+          this.countNodeLevel(node.children[i]);
+        }
+      }
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
