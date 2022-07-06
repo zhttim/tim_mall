@@ -1,6 +1,13 @@
 <!--  -->
 <template>
   <div>
+    <el-switch
+      v-model="draggable"
+      active-text="开启拖拽"
+      inactive-text="关闭拖拽"
+    >
+    </el-switch>
+    <el-button v-if="draggable" @click="batchSave">批量保存</el-button>
     <el-tree
       :data="menus"
       :props="defaultProps"
@@ -8,7 +15,7 @@
       show-checkbox
       node-key="catId"
       :default-expanded-keys="expandedKey"
-      draggable
+      :draggable="draggable"
       :allow-drop="allowDrop"
       @node-drop="handleDrop"
     >
@@ -74,6 +81,8 @@ export default {
   components: {},
   data() {
     return {
+      pCid: [],
+      draggable: false,
       updateNodes: [],
       maxLevel: 0,
       title: "",
@@ -103,6 +112,24 @@ export default {
   watch: {},
   //方法集合
   methods: {
+    batchSave() {
+      this.$http({
+        url: this.$http.adornUrl("/product/category/update/sort"),
+        method: "post",
+        data: this.$http.adornData(this.updateNodes, false),
+      }).then(({ data }) => {
+        this.$message({
+          type: "success",
+          message: "菜单顺序修改成功!",
+        });
+        //刷新新菜单
+        this.getMenus();
+        //设置父菜单展开
+        this.expandedKey = this.pCid;
+        this.updateNodes = [];
+        this.maxLevel = 0;
+      });
+    },
     getMenus() {
       this.$http({
         url: this.$http.adornUrl("/product/category/list/tree"),
@@ -227,8 +254,8 @@ export default {
     allowDrop(draggingNode, dropNode, type) {
       //被拖动的当前节点层数
       //console.log("allowDrop", draggingNode, dropNode, type);
-      this.countNodeLevel(draggingNode.data);
-      let deep = this.maxLevel - draggingNode.data.catLevel + 1;
+      this.countNodeLevel(draggingNode);
+      let deep = Math.abs(this.maxLevel - draggingNode.level) + 1;
       if (type == "inner") {
         return deep + dropNode.level <= 3;
       } else {
@@ -236,12 +263,12 @@ export default {
       }
     },
     countNodeLevel(node) {
-      if (node.children != null && node.children.length > 0) {
-        for (let i = 0; i < node.children.length; i++) {
-          if (node.children[i].catLevel > this.maxLevel) {
-            this.maxLevel = node.children[i].catLevel;
+      if (node.childrenNodes != null && node.childrenNodes.length > 0) {
+        for (let i = 0; i < node.childrenNodes.length; i++) {
+          if (node.childrenNodes[i].level > this.maxLevel) {
+            this.maxLevel = node.childrenNodes[i].level;
           }
-          this.countNodeLevel(node.children[i]);
+          this.countNodeLevel(node.childrenNodes[i]);
         }
       }
     },
@@ -257,6 +284,7 @@ export default {
         pCid = dropNode.data.catId;
         siblings = dropNode.childNodes;
       }
+      this.pCid.push(pCid);
       for (let i = 0; i < siblings.length; i++) {
         if (siblings[i].data.catId == draggingNode.data.catId) {
           let catLevel = draggingNode.level;
@@ -275,22 +303,6 @@ export default {
         }
       }
       console.log("updateNodes", this.updateNodes);
-      this.$http({
-        url: this.$http.adornUrl("/product/category/update/sort"),
-        method: "post",
-        data: this.$http.adornData(this.updateNodes, false),
-      }).then(({ data }) => {
-        this.$message({
-          type: "success",
-          message: "菜单顺序修改成功!",
-        });
-        //刷新新菜单
-        this.getMenus();
-        //设置父菜单展开
-        this.expandedKey = [pCid];
-        this.updateNodes = [];
-        this.maxLevel = 0;
-      });
     },
     updateChildNodeLevel(node) {
       if (node.childNodes.length > 0) {
