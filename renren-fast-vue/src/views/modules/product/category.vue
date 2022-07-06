@@ -268,13 +268,29 @@ export default {
             catId: siblings[i].data.catId,
             sort: i,
             parentCid: pCid,
-            catLevel: catLevel
+            catLevel: catLevel,
           });
         } else {
           this.updateNodes.push({ catId: siblings[i].data.catId, sort: i });
         }
       }
       console.log("updateNodes", this.updateNodes);
+      this.$http({
+        url: this.$http.adornUrl("/product/category/update/sort"),
+        method: "post",
+        data: this.$http.adornData(this.updateNodes, false),
+      }).then(({ data }) => {
+        this.$message({
+          type: "success",
+          message: "菜单顺序修改成功!",
+        });
+        //刷新新菜单
+        this.getMenus();
+        //设置父菜单展开
+        this.expandedKey = [pCid];
+        this.updateNodes = [];
+        this.maxLevel = 0;
+      });
     },
     updateChildNodeLevel(node) {
       if (node.childNodes.length > 0) {
