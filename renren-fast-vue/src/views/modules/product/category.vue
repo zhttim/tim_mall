@@ -10,6 +10,7 @@
       :default-expanded-keys="expandedKey"
       draggable
       :allow-drop="allowDrop"
+      @node-drop="handleDrop"
     >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
@@ -73,6 +74,7 @@ export default {
   components: {},
   data() {
     return {
+      updateNodes: [],
       maxLevel: 0,
       title: "",
       dialogType: "",
@@ -224,13 +226,13 @@ export default {
     },
     allowDrop(draggingNode, dropNode, type) {
       //被拖动的当前节点层数
-      console.log("allowDrop", draggingNode, dropNode, type);
+      //console.log("allowDrop", draggingNode, dropNode, type);
       this.countNodeLevel(draggingNode.data);
       let deep = this.maxLevel - draggingNode.data.catLevel + 1;
-      if(type =="inner"){
-        return (deep + dropNode.level) <=3;
-      }else{
-        return (deep + dropNode.parent.level) <= 3;
+      if (type == "inner") {
+        return deep + dropNode.level <= 3;
+      } else {
+        return deep + dropNode.parent.level <= 3;
       }
     },
     countNodeLevel(node) {
@@ -240,6 +242,49 @@ export default {
             this.maxLevel = node.children[i].catLevel;
           }
           this.countNodeLevel(node.children[i]);
+        }
+      }
+    },
+    handleDrop(draggingNode, dropNode, dropType, ev) {
+      console.log("handleDrop: ", draggingNode, dropNode, dropType);
+      //当前节点最新父节点id与顺序
+      let pCid = 0;
+      let siblings = null;
+      if (dropType == "before" || dropType == "after") {
+        pCid = dropNode.data.parentCid;
+        siblings = dropNode.parent.childNodes;
+      } else {
+        pCid = dropNode.data.catId;
+        siblings = dropNode.childNodes;
+      }
+      for (let i = 0; i < siblings.length; i++) {
+        if (siblings[i].data.catId == draggingNode.data.catId) {
+          let catLevel = draggingNode.level;
+          if (siblings[i].level != draggingNode.level) {
+            catLevel = siblings[i].level;
+            this.updateChildNodeLevel(siblings[i]);
+          }
+          this.updateNodes.push({
+            catId: siblings[i].data.catId,
+            sort: i,
+            parentCid: pCid,
+            catLevel: catLevel
+          });
+        } else {
+          this.updateNodes.push({ catId: siblings[i].data.catId, sort: i });
+        }
+      }
+      console.log("updateNodes", this.updateNodes);
+    },
+    updateChildNodeLevel(node) {
+      if (node.childNodes.length > 0) {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          let cNode = node.childNodes[i].data;
+          this.updateNodes.push({
+            catId: cNode.catId,
+            catLevel: node.childNodes[i].level,
+          });
+          this.updateChildNodeLevel(node.childNodes[i]);
         }
       }
     },
