@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-upload
-      action="http://gulimall-hello.oss-cn-beijing.aliyuncs.com"
+      action="http://gulimall-timhaozi.oss-cn-guangzhou.aliyuncs.com"
       :data="dataObj"
       :list-type="listType"
       :file-list="fileList"
@@ -22,7 +22,7 @@
 </template>
 <script>
 import { policy } from "./policy";
-import { getUUID } from '@/utils'
+import { getUUID } from "@/utils";
 export default {
   name: "multiUpload",
   props: {
@@ -31,17 +31,16 @@ export default {
     //最大上传图片数量
     maxCount: {
       type: Number,
-      default: 30
+      default: 30,
     },
-    listType:{
+    listType: {
       type: String,
-      default: "picture-card"
+      default: "picture-card",
     },
-    showFile:{
+    showFile: {
       type: Boolean,
-      default: true
-    }
-
+      default: true,
+    },
   },
   data() {
     return {
@@ -52,10 +51,10 @@ export default {
         ossaccessKeyId: "",
         dir: "",
         host: "",
-        uuid: ""
+        uuid: "",
       },
       dialogVisible: false,
-      dialogImageUrl: null
+      dialogImageUrl: null,
     };
   },
   computed: {
@@ -66,7 +65,7 @@ export default {
       }
 
       return fileList;
-    }
+    },
   },
   mounted() {},
   methods: {
@@ -88,18 +87,18 @@ export default {
       let _self = this;
       return new Promise((resolve, reject) => {
         policy()
-          .then(response => {
+          .then((response) => {
             console.log("这是什么${filename}");
             _self.dataObj.policy = response.data.policy;
             _self.dataObj.signature = response.data.signature;
             _self.dataObj.ossaccessKeyId = response.data.accessid;
-            _self.dataObj.key = response.data.dir +getUUID()+"_${filename}";
+            _self.dataObj.key = response.data.dir + getUUID() + "_${filename}";
             _self.dataObj.dir = response.data.dir;
             _self.dataObj.host = response.data.host;
             resolve(true);
           })
-          .catch(err => {
-            console.log("出错了...",err)
+          .catch((err) => {
+            console.log("出错了...", err);
             reject(false);
           });
       });
@@ -108,7 +107,10 @@ export default {
       this.fileList.push({
         name: file.name,
         // url: this.dataObj.host + "/" + this.dataObj.dir + "/" + file.name； 替换${filename}为真正的文件名
-        url: this.dataObj.host + "/" + this.dataObj.key.replace("${filename}",file.name)
+        url:
+          this.dataObj.host +
+          "/" +
+          this.dataObj.key.replace("${filename}", file.name),
       });
       this.emitInput(this.fileList);
     },
@@ -116,10 +118,10 @@ export default {
       this.$message({
         message: "最多只能上传" + this.maxCount + "张图片",
         type: "warning",
-        duration: 1000
+        duration: 1000,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

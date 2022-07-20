@@ -5,10 +5,6 @@
 #    password: root
 #    url: jdbc:mysql://192.168.110.20:3306/gulimall_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-#  cloud:
-#    nacos:
-#      discovery:
-#        server-addr: 192.168.110.20:8848
 #  application:
 #    name: gulimall-product
 #mybatis-plus:
