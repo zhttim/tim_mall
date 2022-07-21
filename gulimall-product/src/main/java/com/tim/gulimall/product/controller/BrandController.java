@@ -4,6 +4,7 @@ import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.R;
 import com.tim.common.valid.AddGroup;
 import com.tim.common.valid.UpdateGroup;
+import com.tim.common.valid.UpdateStatusGroup;
 import com.tim.gulimall.product.entity.BrandEntity;
 import com.tim.gulimall.product.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,12 +87,23 @@ public class BrandController {
     }
 
     /**
+     * 修改状态
+     */
+    @RequestMapping("/update/status")
+    //@RequiresPermissions("product:brand:update")
+    public R updateStatus(@Validated(value = UpdateStatusGroup.class) @RequestBody BrandEntity brand) {
+        brandService.updateById(brand);
+
+        return R.ok();
+    }
+
+    /**
      * 删除
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:brand:delete")
-    public R delete(@RequestBody Long[] brandIds){
-		brandService.removeByIds(Arrays.asList(brandIds));
+    public R delete(@RequestBody Long[] brandIds) {
+        brandService.removeByIds(Arrays.asList(brandIds));
 
         return R.ok();
     }
