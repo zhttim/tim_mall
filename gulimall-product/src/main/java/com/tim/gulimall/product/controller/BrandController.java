@@ -5,12 +5,10 @@ import com.tim.common.utils.R;
 import com.tim.gulimall.product.entity.BrandEntity;
 import com.tim.gulimall.product.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -56,22 +54,22 @@ public class BrandController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public R save(@Valid @RequestBody BrandEntity brand, BindingResult result) {
-        if (result.hasErrors()) {
-            Map<String, String> map = new HashMap<>();
-            //获取校验错误结果
-            result.getFieldErrors().forEach(item -> {
-                //获取错误提示
-                String message = item.getDefaultMessage();
-                //获取错误属性
-                String field = item.getField();
-                map.put(field, message);
-            });
-            return R.error(400, "提交的数据不合法").put("data", map);
-        } else {
-            brandService.save(brand);
-            return R.ok();
-        }
+    public R save(@Valid @RequestBody BrandEntity brand /*, BindingResult result*/) {
+//        if (result.hasErrors()) {
+//            Map<String, String> map = new HashMap<>();
+//            //获取校验错误结果
+//            result.getFieldErrors().forEach(item -> {
+//                //获取错误提示
+//                String message = item.getDefaultMessage();
+//                //获取错误属性
+//                String field = item.getField();
+//                map.put(field, message);
+//            });
+//            return R.error(400, "提交的数据不合法").put("data", map);
+//        } else {
+//        }
+        brandService.save(brand);
+        return R.ok();
     }
 
     /**
