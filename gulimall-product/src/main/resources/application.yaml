@@ -7,6 +7,10 @@
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #  application:
 #    name: gulimall-product
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 192.168.110.20:8848
 #mybatis-plus:
 #  mapper-locations: classpath:/mapper/**/*.xml
 #  global-config:
