@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,11 +27,25 @@ public class CategoryBrandRelationController {
     private CategoryBrandRelationService categoryBrandRelationService;
 
     /**
+     * 获取当前品牌关联分类列表
+     *
+     * @param brandId
+     * @return
+     */
+    @GetMapping("/catelog/list")
+    //@RequiresPermissions("product:categorybrandrelation:list")
+    public R catelogList(@RequestParam("brandId") Long brandId) {
+        List<CategoryBrandRelationEntity> catelogList = categoryBrandRelationService.getCatelogList(brandId);
+
+        return R.ok().put("data", catelogList);
+    }
+
+    /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:categorybrandrelation:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = categoryBrandRelationService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -53,8 +68,8 @@ public class CategoryBrandRelationController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:categorybrandrelation:save")
-    public R save(@RequestBody CategoryBrandRelationEntity categoryBrandRelation){
-		categoryBrandRelationService.save(categoryBrandRelation);
+    public R save(@RequestBody CategoryBrandRelationEntity categoryBrandRelation) {
+        categoryBrandRelationService.saveDetail(categoryBrandRelation);
 
         return R.ok();
     }
