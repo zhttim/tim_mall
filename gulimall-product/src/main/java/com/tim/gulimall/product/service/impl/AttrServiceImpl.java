@@ -7,16 +7,24 @@ import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.Query;
 import com.tim.gulimall.product.dao.AttrAttrgroupRelationDao;
 import com.tim.gulimall.product.dao.AttrDao;
+import com.tim.gulimall.product.dao.AttrGroupDao;
+import com.tim.gulimall.product.dao.CategoryDao;
 import com.tim.gulimall.product.entity.AttrAttrgroupRelationEntity;
 import com.tim.gulimall.product.entity.AttrEntity;
+import com.tim.gulimall.product.entity.AttrGroupEntity;
+import com.tim.gulimall.product.entity.CategoryEntity;
 import com.tim.gulimall.product.service.AttrService;
+import com.tim.gulimall.product.vo.AttrRespVo;
 import com.tim.gulimall.product.vo.AttrVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service("attrService")
@@ -24,6 +32,12 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
     @Autowired
     AttrAttrgroupRelationDao attrAttrgroupRelationDao;
+
+    @Autowired
+    AttrGroupDao attrGroupDao;
+
+    @Autowired
+    CategoryDao categoryDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -47,6 +61,44 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
         attrAttrgroupRelationEntity.setAttrId(attrEntity.getAttrId());
         attrAttrgroupRelationDao.insert(attrAttrgroupRelationEntity);
+    }
+
+    @Override
+    public PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId) {
+        QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<>();
+        if (catelogId != 0) {
+            queryWrapper.eq("catelog_id", catelogId);
+        }
+        String key = (String) params.get("key");
+        if (!StringUtils.isEmpty(key)) {
+            queryWrapper.and(wrapper -> {
+                wrapper.eq("attr_id", key).or().like("attr_name", key);
+            });
+        }
+        IPage<AttrEntity> page = this.page(
+                new Query<AttrEntity>().getPage(params), queryWrapper);
+        PageUtils pageUtils = new PageUtils(page);
+        List<AttrEntity> records = page.getRecords();
+        List<AttrRespVo> attrRespVos = records.stream().map(attrEntity -> {
+            AttrRespVo attrRespVo = new AttrRespVo();
+            BeanUtils.copyProperties(attrEntity, attrRespVo);
+            //设置分类与分组名字
+            AttrAttrgroupRelationEntity relationEntity = attrAttrgroupRelationDao
+                    .selectOne(new QueryWrapper<AttrAttrgroupRelationEntity>()
+                            .eq("attr_id", attrEntity.getAttrId()));
+            if (relationEntity != null) {
+                AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(relationEntity.getAttrGroupId());
+                attrRespVo.setGroupName(attrGroupEntity.getAttrGroupName());
+            }
+            CategoryEntity categoryEntity = categoryDao.selectById(attrEntity.getCatelogId());
+            if (categoryEntity != null) {
+                attrRespVo.setCatelogName(categoryEntity.getName());
+            }
+            return attrRespVo;
+        }).collect(Collectors.toList());
+
+        pageUtils.setList(attrRespVos);
+        return pageUtils;
     }
 
 }
