@@ -2,8 +2,8 @@ package com.tim.gulimall.product.controller;
 
 import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.R;
-import com.tim.gulimall.product.entity.AttrEntity;
 import com.tim.gulimall.product.service.AttrService;
+import com.tim.gulimall.product.vo.AttrRespVo;
 import com.tim.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -50,10 +50,10 @@ public class AttrController {
      */
     @RequestMapping("/info/{attrId}")
     //@RequiresPermissions("product:attr:info")
-    public R info(@PathVariable("attrId") Long attrId){
-		AttrEntity attr = attrService.getById(attrId);
-
-        return R.ok().put("attr", attr);
+    public R info(@PathVariable("attrId") Long attrId) {
+//		AttrEntity attr = attrService.getById(attrId);
+        AttrRespVo attrRespVo = attrService.getAttrInfo(attrId);
+        return R.ok().put("attr", attrRespVo);
     }
 
     /**
@@ -72,8 +72,8 @@ public class AttrController {
      */
     @RequestMapping("/update")
     //@RequiresPermissions("product:attr:update")
-    public R update(@RequestBody AttrEntity attr){
-		attrService.updateById(attr);
+    public R update(@RequestBody AttrRespVo attrRespVo) {
+        attrService.updateAttr(attrRespVo);
 
         return R.ok();
     }
