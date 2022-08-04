@@ -2,13 +2,17 @@ package com.tim.gulimall.product.controller;
 
 import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.R;
+import com.tim.gulimall.product.entity.AttrEntity;
 import com.tim.gulimall.product.entity.AttrGroupEntity;
 import com.tim.gulimall.product.service.AttrGroupService;
+import com.tim.gulimall.product.service.AttrService;
 import com.tim.gulimall.product.service.CategoryService;
+import com.tim.gulimall.product.vo.AttrGroupRelationVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -28,6 +32,21 @@ public class AttrGroupController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    AttrService attrService;
+
+    @PostMapping("/attr/relation/delete")
+    public R deleteRelation(@RequestBody AttrGroupRelationVo[] attrGroupRelationVos) {
+        attrService.deleteRelation(attrGroupRelationVos);
+        return R.ok();
+    }
+
+    @GetMapping("/{attrgroupId}/attr/relation")
+    public R attrRelation(@PathVariable("attrgroupId") Long attrgroupId) {
+        List<AttrEntity> attrEntities = attrService.getRelationAttr(attrgroupId);
+        return R.ok().put("data", attrEntities);
+    }
 
     /**
      * 列表
