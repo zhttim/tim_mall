@@ -215,4 +215,44 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         attrAttrgroupRelationDao.deleteBatchRelation(attrAttrgroupRelationEntities);
     }
 
+    @Override
+    public PageUtils getNoRelationAttr(Map<String, Object> params, Long attrgroupId) {
+        AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attrgroupId);
+        Long catelogId = attrGroupEntity.getCatelogId();
+
+        List<AttrGroupEntity> attrGroupEntities = attrGroupDao.selectList(new QueryWrapper<AttrGroupEntity>()
+                .eq("catelog_id", catelogId));
+
+        List<Long> collect = attrGroupEntities.stream().map(item -> {
+            return item.getAttrGroupId();
+        }).collect(Collectors.toList());
+
+        List<AttrAttrgroupRelationEntity> attrAttrgroupRelationEntities = attrAttrgroupRelationDao
+                .selectList(new QueryWrapper<AttrAttrgroupRelationEntity>()
+                        .in("attr_group_id", collect));
+
+        List<Long> attrIds = attrAttrgroupRelationEntities.stream().map(item -> {
+            return item.getAttrId();
+        }).collect(Collectors.toList());
+
+        QueryWrapper<AttrEntity> wrapper = new QueryWrapper<AttrEntity>()
+                .eq("catelog_id", catelogId)
+                .eq("attr_type", ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode());
+
+        if (!(attrIds == null || attrIds.size() == 0)) {
+            wrapper.notIn("attr_id", attrIds);
+        }
+
+        String key = (String) params.get("key");
+        if (!StringUtils.isEmpty(key)) {
+            wrapper.and(item -> {
+                item.eq("attr_id", key).or().like("attr_name", key);
+            });
+        }
+
+        IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params), wrapper);
+
+        return new PageUtils(page);
+    }
+
 }
