@@ -66,7 +66,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         BeanUtils.copyProperties(attr, attrEntity);
         this.save(attrEntity);
         //保存关联关系
-        if (attr.getAttrType() == ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode()) {
+        if (attr.getAttrType() == ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode() && attr.getAttrGroupId() != null) {
             AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
             attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
             attrAttrgroupRelationEntity.setAttrId(attrEntity.getAttrId());
@@ -103,7 +103,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
                 AttrAttrgroupRelationEntity relationEntity = attrAttrgroupRelationDao
                         .selectOne(new QueryWrapper<AttrAttrgroupRelationEntity>()
                                 .eq("attr_id", attrEntity.getAttrId()));
-                if (relationEntity != null) {
+                if (relationEntity != null && relationEntity.getAttrGroupId() != null) {
                     AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(relationEntity.getAttrGroupId());
                     attrRespVo.setGroupName(attrGroupEntity.getAttrGroupName());
                 }

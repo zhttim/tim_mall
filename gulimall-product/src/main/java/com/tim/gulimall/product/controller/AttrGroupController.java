@@ -4,6 +4,7 @@ import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.R;
 import com.tim.gulimall.product.entity.AttrEntity;
 import com.tim.gulimall.product.entity.AttrGroupEntity;
+import com.tim.gulimall.product.service.AttrAttrgroupRelationService;
 import com.tim.gulimall.product.service.AttrGroupService;
 import com.tim.gulimall.product.service.AttrService;
 import com.tim.gulimall.product.service.CategoryService;
@@ -35,6 +36,16 @@ public class AttrGroupController {
 
     @Autowired
     AttrService attrService;
+
+    @Autowired
+    AttrAttrgroupRelationService attrAttrgroupRelationService;
+
+    @PostMapping("/attr/relation")
+    public R addrelation(@RequestBody List<AttrGroupRelationVo> attrGroupRelationVos) {
+        attrAttrgroupRelationService.saveBatch(attrGroupRelationVos);
+
+        return R.ok();
+    }
 
     @PostMapping("/attr/relation/delete")
     public R deleteRelation(@RequestBody AttrGroupRelationVo[] attrGroupRelationVos) {

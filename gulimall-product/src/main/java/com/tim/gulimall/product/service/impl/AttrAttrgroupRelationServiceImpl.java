@@ -8,9 +8,13 @@ import com.tim.common.utils.Query;
 import com.tim.gulimall.product.dao.AttrAttrgroupRelationDao;
 import com.tim.gulimall.product.entity.AttrAttrgroupRelationEntity;
 import com.tim.gulimall.product.service.AttrAttrgroupRelationService;
+import com.tim.gulimall.product.vo.AttrGroupRelationVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service("attrAttrgroupRelationService")
@@ -24,6 +28,17 @@ public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupR
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public void saveBatch(List<AttrGroupRelationVo> attrGroupRelationVos) {
+        List<AttrAttrgroupRelationEntity> attrAttrgroupRelationEntities = attrGroupRelationVos.stream().map(item -> {
+            AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
+            BeanUtils.copyProperties(item, attrAttrgroupRelationEntity);
+            return attrAttrgroupRelationEntity;
+        }).collect(Collectors.toList());
+
+        this.saveBatch(attrAttrgroupRelationEntities);
     }
 
 }
