@@ -46,14 +46,16 @@ public class AttrEntity implements Serializable {
 	/**
 	 * 启用状态[0 - 禁用，1 - 启用]
 	 */
-	private Long enable;
-	/**
-	 * 所属分类
-	 */
-	private Long catelogId;
-	/**
-	 * 快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整
-	 */
-	private Integer showDesc;
+    private Long enable;
+    /**
+     * 所属分类
+     */
+    private Long catelogId;
+    /**
+     * 快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整
+     */
+    private Integer showDesc;
+
+    private Integer valueType;
 
 }
