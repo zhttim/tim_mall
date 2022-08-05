@@ -501,16 +501,16 @@ var navDataList = [
 
 // 获取导航菜单列表 / 权限
 export function nav() {
-  return {
-    // isOpen: false,
-    url: '/sys/menu/nav',
-    type: 'get',
-    data: {
-      'msg': 'success',
-      'code': 0,
-      'menuList': navDataList,
-      'permissions': [
-        'sys:schedule:info',
+    return {
+        // isOpen: false,
+        url: '/sys/menu/nav',
+        type: 'get',
+        data: {
+            'msg': 'success',
+            'code': 0,
+            'menuList': navDataList,
+            'permissions': [
+                'sys:schedule:info',
         'sys:menu:update',
         'sys:menu:delete',
         'sys:config:info',
@@ -550,79 +550,79 @@ export function nav() {
 
 // 获取菜单列表
 export function list() {
-  return {
-    // isOpen: false,
-    url: '/sys/menu/list',
-    type: 'get',
-    data: dataList
-  }
+    return {
+        // isOpen: false,
+        url: '/sys/menu/list',
+        type: 'get',
+        data: dataList
+    }
 }
 
 // 获取上级菜单
 export function select() {
-  let dataList = JSON.parse(JSON.stringify(navDataList))
-  dataList = dataList.concat(dataList[0].list)
-  return {
-    // isOpen: false,
-    url: '/sys/menu/select',
-    type: 'get',
-    data: {
-      'msg': 'success',
-      'code': 0,
-      'menuList': dataList
+    let dataList = JSON.parse(JSON.stringify(navDataList))
+    dataList = dataList.concat(dataList[0].list)
+    return {
+        // isOpen: false,
+        url: '/sys/menu/select',
+        type: 'get',
+        data: {
+            'msg': 'success',
+            'code': 0,
+            'menuList': dataList
     }
   }
 }
 
 // 获取菜单信息
 export function info() {
-  return {
-    // isOpen: false,
-    url: '/sys/menu/info',
-    type: 'get',
-    data: {
-      'msg': 'success',
-      'code': 0,
-      'menu': dataList[0]
+    return {
+        // isOpen: false,
+        url: '/sys/menu/info',
+        type: 'get',
+        data: {
+            'msg': 'success',
+            'code': 0,
+            'menu': dataList[0]
+        }
     }
-  }
 }
 
 // 添加菜单
 export function add() {
-  return {
-    // isOpen: false,
-    url: '/sys/menu/save',
-    type: 'post',
-    data: {
-      'msg': 'success',
-      'code': 0
+    return {
+        // isOpen: false,
+        url: '/sys/menu/save',
+        type: 'post',
+        data: {
+            'msg': 'success',
+            'code': 0
+        }
     }
-  }
 }
 
 // 修改菜单
 export function update() {
-  return {
-    // isOpen: false,
-    url: '/sys/menu/update',
-    type: 'post',
-    data: {
-      'msg': 'success',
-      'code': 0
+    return {
+        // isOpen: false,
+        url: '/sys/menu/update',
+        type: 'post',
+        data: {
+            'msg': 'success',
+            'code': 0
+        }
     }
-  }
 }
 
 // 删除菜单
 export function del() {
-  return {
-    // isOpen: false,
-    url: '/sys/menu/delete',
-    type: 'post',
-    data: {
-      'msg': 'success',
-      'code': 0
+    return {
+        // isOpen: false,
+        url: '/sys/menu/delete',
+        type: 'post',
+        data: {
+            'msg': 'success',
+            'code': 0
+        }
     }
-  }
 }

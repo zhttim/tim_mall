@@ -46,6 +46,12 @@ const mainRoutes = {
       component: _import('demo/ueditor'),
       name: 'demo-ueditor',
       meta: {title: 'demo-ueditor', isTab: true}
+    },
+    {
+      path: '/product-attrupdate',
+      component: _import('modules/product/attrupdate'),
+      name: 'attr-update',
+      meta: {title: '规格维护', isTab: true}
     }
   ],
   beforeEnter(to, from, next) {

@@ -156,6 +156,7 @@ Vue.use(Divider);
 Vue.use(Image);
 Vue.use(Calendar);
 
+
 Vue.use(Loading.directive)
 
 Vue.prototype.$loading = Loading.service

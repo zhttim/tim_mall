@@ -12,12 +12,14 @@ import com.tim.gulimall.product.dao.CategoryDao;
 import com.tim.gulimall.product.entity.BrandEntity;
 import com.tim.gulimall.product.entity.CategoryBrandRelationEntity;
 import com.tim.gulimall.product.entity.CategoryEntity;
+import com.tim.gulimall.product.service.BrandService;
 import com.tim.gulimall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service("categoryBrandRelationService")
@@ -26,6 +28,12 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     BrandDao brandDao;
     @Autowired
     CategoryDao categoryDao;
+
+    @Autowired
+    CategoryBrandRelationDao categoryBrandRelationDao;
+
+    @Autowired
+    BrandService brandService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -70,6 +78,18 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     @Override
     public void updateCategory(Long catId, String name) {
         this.baseMapper.updateCategory(catId, name);
+    }
+
+    @Override
+    public List<BrandEntity> getBrandsByCatId(Long catId) {
+        List<CategoryBrandRelationEntity> categoryBrandRelationEntities = categoryBrandRelationDao
+                .selectList(new QueryWrapper<CategoryBrandRelationEntity>()
+                        .eq("catelog_id", catId));
+        List<BrandEntity> brandEntities = categoryBrandRelationEntities.stream().map(item -> {
+            //根据品牌id查询出品牌对象
+            return brandDao.selectById(item.getBrandId());
+        }).collect(Collectors.toList());
+        return brandEntities;
     }
 
 }
