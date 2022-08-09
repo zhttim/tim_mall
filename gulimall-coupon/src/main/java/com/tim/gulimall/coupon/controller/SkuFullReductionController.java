@@ -1,5 +1,6 @@
 package com.tim.gulimall.coupon.controller;
 
+import com.tim.common.to.SkuReductionTo;
 import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.R;
 import com.tim.gulimall.coupon.entity.SkuFullReductionEntity;
@@ -16,7 +17,7 @@ import java.util.Map;
  * 商品满减信息
  *
  * @author tim
- * @email 
+ * @email
  * @date 2022-05-12 19:25:04
  */
 @RestController
@@ -25,12 +26,18 @@ public class SkuFullReductionController {
     @Autowired
     private SkuFullReductionService skuFullReductionService;
 
+    @PostMapping("/saveInfo")
+    public R saveInfo(@RequestBody SkuReductionTo skuReductionTo) {
+        skuFullReductionService.saveSkuReduction(skuReductionTo);
+        return R.ok();
+    }
+
     /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:skufullreduction:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = skuFullReductionService.queryPage(params);
 
         return R.ok().put("page", page);
