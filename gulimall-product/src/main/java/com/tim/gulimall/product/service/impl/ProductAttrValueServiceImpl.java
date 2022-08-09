@@ -10,6 +10,7 @@ import com.tim.gulimall.product.entity.ProductAttrValueEntity;
 import com.tim.gulimall.product.service.ProductAttrValueService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +25,11 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueDao
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public void saveProductAttr(List<ProductAttrValueEntity> productAttrValueEntities) {
+        this.saveBatch(productAttrValueEntities);
     }
 
 }

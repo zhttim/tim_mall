@@ -4,6 +4,7 @@ import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.R;
 import com.tim.gulimall.product.entity.SpuInfoEntity;
 import com.tim.gulimall.product.service.SpuInfoService;
+import com.tim.gulimall.product.vo.SpuSaveVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,8 +54,9 @@ public class SpuInfoController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:spuinfo:save")
-    public R save(@RequestBody SpuInfoEntity spuInfo){
-		spuInfoService.save(spuInfo);
+    public R save(@RequestBody SpuSaveVo spuSaveVo) {
+        //spuInfoService.save(spuInfo);
+        spuInfoService.saveSpuInfo(spuSaveVo);
 
         return R.ok();
     }
