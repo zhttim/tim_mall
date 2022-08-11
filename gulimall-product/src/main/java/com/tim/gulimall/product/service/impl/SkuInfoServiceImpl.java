@@ -71,7 +71,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         }
         IPage<SkuInfoEntity> page = this.page(
                 new Query<SkuInfoEntity>().getPage(params), queryWrapper);
-        return null;
+        return new PageUtils(page);
     }
 
 }
