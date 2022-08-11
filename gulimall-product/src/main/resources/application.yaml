@@ -1,5 +1,7 @@
 #使用nacos配置中心配置
-#spring:
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 #  datasource:
 #    username: root
 #    password: root
@@ -18,3 +20,7 @@
 #      id-type: auto
 #server:
 #  port: 10000
+
+logging:
+  level:
+    com.tim.gulimall: debug

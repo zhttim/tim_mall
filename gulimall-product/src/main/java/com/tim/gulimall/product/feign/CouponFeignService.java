@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author tim
  * @date 2022/8/9 18:08
  **/
-@FeignClient("gulimall-coupon ")
+@FeignClient("gulimall-coupon")
 public interface CouponFeignService {
     @PostMapping("coupon/spubounds/save")
     R saveSpuBounds(@RequestBody SpuBoundTo spuBoundTo);
