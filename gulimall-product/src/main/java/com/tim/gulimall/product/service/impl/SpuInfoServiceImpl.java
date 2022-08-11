@@ -182,31 +182,31 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
     @Override
     public PageUtils queryPageByCondition(Map<String, Object> params) {
-        QueryWrapper<SpuInfoEntity> wrapper = new QueryWrapper<>();
+        QueryWrapper<SpuInfoEntity> queryWrapper = new QueryWrapper<>();
         // 取出参数 key 进行查询
         String key = (String) params.get("key");
         if (!StringUtils.isEmpty(key)) {
-            wrapper.and((w) -> {
-                w.eq("id", "key").or().like("spu_name", key);
+            queryWrapper.and((wrapper) -> {
+                wrapper.eq("id", "key").or().like("spu_name", key);
             });
         }
         // 验证不为空 取出参数进行 查询
         String status = (String) params.get("status");
         if (!StringUtils.isEmpty(status)) {
-            wrapper.eq("publish_status", status);
+            queryWrapper.eq("publish_status", status);
         }
         String brandId = (String) params.get("brandId");
         if (!StringUtils.isEmpty(brandId) && !"0".equalsIgnoreCase(brandId)) {
-            wrapper.eq("brand_id", brandId);
+            queryWrapper.eq("brand_id", brandId);
         }
 
         String catelogId = (String) params.get("catelogId");
         if (!StringUtils.isEmpty(catelogId) && !"0".equalsIgnoreCase(catelogId)) {
-            wrapper.eq("catalog_id", catelogId);
+            queryWrapper.eq("catalog_id", catelogId);
         }
 
         IPage<SpuInfoEntity> page = this.page(
-                new Query<SpuInfoEntity>().getPage(params), wrapper);
+                new Query<SpuInfoEntity>().getPage(params), queryWrapper);
 
         return new PageUtils(page);
     }
