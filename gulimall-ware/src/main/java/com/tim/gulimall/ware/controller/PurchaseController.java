@@ -5,6 +5,7 @@ import com.tim.common.utils.R;
 import com.tim.gulimall.ware.entity.PurchaseEntity;
 import com.tim.gulimall.ware.service.PurchaseService;
 import com.tim.gulimall.ware.vo.MergeVo;
+import com.tim.gulimall.ware.vo.PurchaseDoneVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,14 @@ import java.util.Map;
 public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
+
+    @PostMapping("/done")
+    public R finish(@RequestBody PurchaseDoneVo purchaseDoneVo) {
+
+        purchaseService.done(purchaseDoneVo);
+
+        return R.ok();
+    }
 
     @PostMapping("/received")
     public R received(@RequestBody List<Long> ids) {
