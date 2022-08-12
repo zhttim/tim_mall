@@ -4,6 +4,7 @@ import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.R;
 import com.tim.gulimall.ware.entity.PurchaseEntity;
 import com.tim.gulimall.ware.service.PurchaseService;
+import com.tim.gulimall.ware.vo.MergeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  * 采购信息
  *
  * @author tim
- * @email 
+ * @email
  * @date 2022-05-12 19:59:36
  */
 @RestController
@@ -25,12 +26,29 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
+    @PostMapping("/merge")
+    //@RequiresPermissions("ware:purchase:list")
+    public R merge(@RequestBody MergeVo mergeVo) {
+
+        purchaseService.mergePurchase(mergeVo);
+
+        return R.ok();
+    }
+
+    @GetMapping("/unreceive/list")
+    //@RequiresPermissions("ware:purchase:list")
+    public R unreceiveList(@RequestParam Map<String, Object> params) {
+        PageUtils page = purchaseService.queryPageUnreceivePurchase(params);
+
+        return R.ok().put("page", page);
+    }
+
     /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("ware:purchase:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = purchaseService.queryPage(params);
 
         return R.ok().put("page", page);

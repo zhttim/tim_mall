@@ -21,6 +21,6 @@ spring:
 #server:
 #  port: 10000
 
-logging:
-  level:
-    com.tim.gulimall: debug
+#logging:
+#  level:
+#    com.tim.gulimall: debug

@@ -1,4 +1,7 @@
 #使用nacos配置中心配置
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 #spring:
 #  datasource:
 #    username: root
