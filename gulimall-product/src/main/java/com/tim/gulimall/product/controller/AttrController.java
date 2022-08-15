@@ -2,13 +2,16 @@ package com.tim.gulimall.product.controller;
 
 import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.R;
+import com.tim.gulimall.product.entity.ProductAttrValueEntity;
 import com.tim.gulimall.product.service.AttrService;
+import com.tim.gulimall.product.service.ProductAttrValueService;
 import com.tim.gulimall.product.vo.AttrRespVo;
 import com.tim.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -25,6 +28,17 @@ import java.util.Map;
 public class AttrController {
     @Autowired
     private AttrService attrService;
+
+    @Autowired
+    ProductAttrValueService productAttrValueService;
+
+    @GetMapping("/base/listforspu/{spuId}")
+    public R baseAttrListForSpu(@PathVariable("spuId") Long spuId) {
+
+        List<ProductAttrValueEntity> productAttrValueEntities = productAttrValueService.getBaseAttrListForSpu(spuId);
+
+        return R.ok().put("data", productAttrValueEntities);
+    }
 
     @GetMapping("/{attrType}/list/{catelogId}")
     public R baseAttrList(@RequestParam Map<String, Object> params,
@@ -79,13 +93,23 @@ public class AttrController {
         return R.ok();
     }
 
+    @PostMapping("/update/{spuId}")
+    //@RequiresPermissions("product:attr:update")
+    public R updateAttr(@PathVariable("spuId") Long spuId,
+                        @RequestBody List<ProductAttrValueEntity> productAttrValueEntities) {
+
+        productAttrValueService.updateSpuAttr(spuId, productAttrValueEntities);
+
+        return R.ok();
+    }
+
     /**
      * 删除
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:attr:delete")
-    public R delete(@RequestBody Long[] attrIds){
-		attrService.removeByIds(Arrays.asList(attrIds));
+    public R delete(@RequestBody Long[] attrIds) {
+        attrService.removeByIds(Arrays.asList(attrIds));
 
         return R.ok();
     }
