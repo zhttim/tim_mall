@@ -4,10 +4,12 @@ import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.R;
 import com.tim.gulimall.ware.entity.WareSkuEntity;
 import com.tim.gulimall.ware.service.WareSkuService;
+import com.tim.gulimall.ware.vo.SkuHasStockVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -16,7 +18,7 @@ import java.util.Map;
  * 商品库存
  *
  * @author tim
- * @email 
+ * @email
  * @date 2022-05-12 19:59:36
  */
 @RestController
@@ -25,12 +27,20 @@ public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
 
+    @PostMapping("/hasstock")
+    public R<List<SkuHasStockVo>> getSkusHasStock(@RequestBody List<Long> skuIds) {
+        List<SkuHasStockVo> skuHasStockVoList = wareSkuService.getSkusHasStock(skuIds);
+        R<List<SkuHasStockVo>> r = R.ok();
+        r.setData(skuHasStockVoList);
+        return r;
+    }
+
     /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("ware:waresku:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = wareSkuService.queryPage(params);
 
         return R.ok().put("page", page);
