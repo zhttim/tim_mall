@@ -300,10 +300,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         R r = searchFeignService.productStatusUp(upProducts);
         if (r.getCode() == 0) {
             // 远程调用成功
-            // TODO 6、修改当前 spu 的状态
+            // 修改当前 spu 的状态
             baseMapper.updateSpuStatus(spuId, ProductConstant.StatusEnum.SPU_UP.getCode());
         } else {
-
+            //TODO 请求失败后的重试
         }
     }
 
