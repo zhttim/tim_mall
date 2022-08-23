@@ -1,8 +1,10 @@
 package com.tim.gulimall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.tim.common.constant.ProductConstant;
 import com.tim.common.to.SkuReductionTo;
 import com.tim.common.to.SpuBoundTo;
 import com.tim.common.to.es.SkuEsModel;
@@ -12,6 +14,7 @@ import com.tim.common.utils.R;
 import com.tim.gulimall.product.dao.SpuInfoDao;
 import com.tim.gulimall.product.entity.*;
 import com.tim.gulimall.product.feign.CouponFeignService;
+import com.tim.gulimall.product.feign.SearchFeignService;
 import com.tim.gulimall.product.feign.WareFeignService;
 import com.tim.gulimall.product.service.*;
 import com.tim.gulimall.product.vo.*;
@@ -61,6 +64,9 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
     @Autowired
     WareFeignService wareFeignService;
+
+    @Autowired
+    SearchFeignService searchFeignService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -248,9 +254,11 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         //发送远程调用，库存系统查询是否有库存
         Map<Long, Boolean> stockMap = null;
         try {
-            R<List<SkuHasStockVo>> skusHasStock = wareFeignService.getSkusHasStock(skuIds);
+            R skusHasStock = wareFeignService.getSkusHasStock(skuIds);
             // key 是 SkuHasStockVo的 skuid value是 hasStock 是否拥有库存
-            stockMap = skusHasStock.getData().stream().collect(Collectors.toMap(SkuHasStockVo::getSkuId, SkuHasStockVo::getHasStock));
+            TypeReference<List<SkuHasStockVo>> typeReference = new TypeReference<List<SkuHasStockVo>>() {
+            };
+            stockMap = skusHasStock.getData(typeReference).stream().collect(Collectors.toMap(SkuHasStockVo::getSkuId, SkuHasStockVo::getHasStock));
         } catch (Exception e) {
             log.error("库存服务异常：原因：{}", e);
         }
@@ -287,6 +295,16 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
             return skuEsModel;
         }).collect(Collectors.toList());
+
+        //将数据发送给 es保存 ，直接发送给 search服务
+        R r = searchFeignService.productStatusUp(upProducts);
+        if (r.getCode() == 0) {
+            // 远程调用成功
+            // TODO 6、修改当前 spu 的状态
+            baseMapper.updateSpuStatus(spuId, ProductConstant.StatusEnum.SPU_UP.getCode());
+        } else {
+
+        }
     }
 
 }

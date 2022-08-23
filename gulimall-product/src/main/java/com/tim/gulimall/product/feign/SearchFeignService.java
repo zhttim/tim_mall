@@ -1,5 +1,6 @@
 package com.tim.gulimall.product.feign;
 
+import com.tim.common.to.es.SkuEsModel;
 import com.tim.common.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,11 +10,10 @@ import java.util.List;
 
 /**
  * @author tim
- * @date 2022/8/22 23:38
+ * @date 2022/8/23 12:23
  **/
-@FeignClient("gulimall-ware")
-public interface WareFeignService {
-
-    @PostMapping("ware/waresku/hasstock")
-    R getSkusHasStock(@RequestBody List<Long> skuIds);
+@FeignClient("gulimall-search")
+public interface SearchFeignService {
+    @PostMapping("/search/save/product")
+    R productStatusUp(@RequestBody List<SkuEsModel> skuEsModels);
 }
