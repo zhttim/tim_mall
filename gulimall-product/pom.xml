@@ -42,6 +42,11 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <!-- 版本后由SpringBoot进行管理-->
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
         <!--使用spring-cloud-starter-alicloud-oss替代-->
         <!--        <dependency>-->
         <!--            <groupId>com.aliyun.oss</groupId>-->
