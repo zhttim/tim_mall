@@ -1,9 +1,16 @@
 #使用nacos配置中心配置
 spring:
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000           # 过期时间
+      #      key-prefix: CACHE_              # key前缀
+      use-key-prefix: true            # 是否使用写入redis前缀
+      cache-null-values: true         # 是否允许缓存空值
   thymeleaf:
     cache: false
+#  jackson:
+#    date-format: yyyy-MM-dd HH:mm:ss
 #  datasource:
 #    username: root
 #    password: root
@@ -23,6 +30,6 @@ spring:
 #server:
 #  port: 10000
 
-#logging:
-#  level:
-#    com.tim.gulimall: debug
+logging:
+  level:
+    com.tim.gulimall: debug

@@ -15,7 +15,7 @@
 <body>
 <div class="top_find">
     <div class="top_find_son">
-        <img src="/static/index/img/top_find_logo.png" alt="">
+<!--        <img src="/static/index/img/top_find_logo.png" alt="">-->
         <div class="input_find">
             <input type="text" placeholder="卸妆水"/>
             <span style="background: url('/static/index/img/img_12.png') 0 -1px;"></span>
@@ -591,28 +591,28 @@
         location.href = "http://item.gulimall.com/" + skuId + ".html";
     }
 
-    $.get("http://seckill.gulimall.com/currentSeckillSkus", function (resp) {
-        if (resp.data.length > 0) {
-            resp.data.forEach(function (item) {
-
-                $("<li onclick='to_href(" + item.skuId + ")'></li>")
-                    .append($("<img style='width: 130px;height: 130px' src='" + item.skuInfo.skuDefaultImg + "'/>"))
-                    .append($("<p>" + item.skuInfo.skuTitle + "</p>"))
-                    .append($("<span>" + item.seckillPrice + "</span>"))
-                    .append($("<s>" + item.skuInfo.price + "</s>"))
-                    .appendTo("#seckillSkuContent");
-            })
-        }
-
-        /**
-         *   <li>
-         <img src="/static/index/img/section_second_list_img1.jpg" alt="">
-         <p>花王 (Merries) 妙而舒 纸尿裤 大号 L54片 尿不湿（9-14千克） （日本官方直采） 花王 (Merries) 妙而舒 纸尿裤 大号 L54片
-         尿不湿（9-14千</p>
-         <span>¥83.9</span><s>¥99.9</s>
-         </li>
-         */
-    });
+    // $.get("http://seckill.gulimall.com/currentSeckillSkus", function (resp) {
+    //     if (resp.data.length > 0) {
+    //         resp.data.forEach(function (item) {
+    //
+    //             $("<li onclick='to_href(" + item.skuId + ")'></li>")
+    //                 .append($("<img style='width: 130px;height: 130px' src='" + item.skuInfo.skuDefaultImg + "'/>"))
+    //                 .append($("<p>" + item.skuInfo.skuTitle + "</p>"))
+    //                 .append($("<span>" + item.seckillPrice + "</span>"))
+    //                 .append($("<s>" + item.skuInfo.price + "</s>"))
+    //                 .appendTo("#seckillSkuContent");
+    //         })
+    //     }
+    //
+    //     /**
+    //      *   <li>
+    //      <img src="/static/index/img/section_second_list_img1.jpg" alt="">
+    //      <p>花王 (Merries) 妙而舒 纸尿裤 大号 L54片 尿不湿（9-14千克） （日本官方直采） 花王 (Merries) 妙而舒 纸尿裤 大号 L54片
+    //      尿不湿（9-14千</p>
+    //      <span>¥83.9</span><s>¥99.9</s>
+    //      </li>
+    //      */
+    // });
 
 </script>
 <script type="text/javascript" src="/static/index/js/text.js"></script>
