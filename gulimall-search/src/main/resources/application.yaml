@@ -1,5 +1,7 @@
 #使用nacos配置中心配置
 spring:
+  thymeleaf:
+    cache: false
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
   #  datasource:
