@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -46,11 +47,18 @@ public class BrandController {
      */
     @RequestMapping("/info/{brandId}")
     //@RequiresPermissions("product:brand:info")
-    public R info(@PathVariable("brandId") Long brandId){
-		BrandEntity brand = brandService.getById(brandId);
+    public R info(@PathVariable("brandId") Long brandId) {
+        BrandEntity brand = brandService.getById(brandId);
 
         return R.ok().put("brand", brand);
     }
+
+    @GetMapping("infos")
+    public R brandInfos(@RequestParam("brandIds") List<Long> brandIds) {
+        List<BrandEntity> brands = brandService.getBrandsByIds(brandIds);
+        return R.ok().put("brand", brands);
+    }
+
 
     /**
      * 保存

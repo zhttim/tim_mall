@@ -23,6 +23,11 @@ import java.util.Map;
 public class R extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
+    public <T> T getData(String key, TypeReference<T> typeReference) {
+        Object data = this.get(key);
+        return JSON.parseObject(JSON.toJSONString(data), typeReference);
+    }
+
     public <T> T getData(TypeReference<T> typeReference) {
         Object data = this.get("data");
         return JSON.parseObject(JSON.toJSONString(data), typeReference);
