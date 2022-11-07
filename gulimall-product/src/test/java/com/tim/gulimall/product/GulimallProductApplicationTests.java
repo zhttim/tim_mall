@@ -1,9 +1,11 @@
 package com.tim.gulimall.product;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.tim.gulimall.product.dao.SkuSaleAttrValueDao;
 import com.tim.gulimall.product.entity.BrandEntity;
 import com.tim.gulimall.product.service.BrandService;
 import com.tim.gulimall.product.service.CategoryService;
+import com.tim.gulimall.product.vo.SkuItemSaleAttrVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +34,9 @@ public class GulimallProductApplicationTests {
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    SkuSaleAttrValueDao skuSaleAttrValueDao;
+
     @Test
     public void testRedis() {
         ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
@@ -57,5 +62,11 @@ public class GulimallProductApplicationTests {
     public void testFindPath() {
         Long[] catelogPath = categoryService.findCatelogPath(225L);
         log.info("完整路径: {}", Arrays.asList(catelogPath));
+    }
+
+    @Test
+    public void test() {
+        List<SkuItemSaleAttrVo> saleAttrsBySpuId = skuSaleAttrValueDao.getSaleAttrsBySpuId(3L);
+        System.out.println(saleAttrsBySpuId);
     }
 }

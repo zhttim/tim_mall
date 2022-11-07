@@ -9,6 +9,11 @@ spring:
       cache-null-values: true         # 是否允许缓存空值
   thymeleaf:
     cache: false
+gulimall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10
 #  jackson:
 #    date-format: yyyy-MM-dd HH:mm:ss
 #  datasource:
