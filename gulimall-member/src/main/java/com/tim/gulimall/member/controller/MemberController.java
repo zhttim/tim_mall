@@ -1,10 +1,15 @@
 package com.tim.gulimall.member.controller;
 
+import com.tim.common.exception.BizCodeEnume;
 import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.R;
 import com.tim.gulimall.member.entity.MemberEntity;
+import com.tim.gulimall.member.exception.PhoneExsitException;
+import com.tim.gulimall.member.exception.UsernameExistException;
 import com.tim.gulimall.member.feign.CouponFeignService;
 import com.tim.gulimall.member.service.MemberService;
+import com.tim.gulimall.member.vo.MemberLoginVo;
+import com.tim.gulimall.member.vo.MemberRegistVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +22,7 @@ import java.util.Map;
  * 会员
  *
  * @author tim
- * @email 
+ * @email
  * @date 2022-05-12 19:42:36
  */
 @RestController
@@ -28,8 +33,32 @@ public class MemberController {
     @Autowired
     private CouponFeignService couponFeignService;
 
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginVo vo) {
+
+        MemberEntity entity = memberService.login(vo);
+        if (entity != null) {
+            return R.ok().setData(entity);
+        } else {
+            return R.error(BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getCode(), BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getMsg());
+        }
+    }
+
+    @PostMapping("/regist")
+    public R regist(@RequestBody MemberRegistVo vo) {
+        try {
+            memberService.regist(vo);
+        } catch (PhoneExsitException e) {
+            return R.error(BizCodeEnume.PHONE_EXIST_EXCEPTION.getCode(), BizCodeEnume.PHONE_EXIST_EXCEPTION.getMsg());
+        } catch (UsernameExistException e) {
+            return R.error(BizCodeEnume.USER_EXIST_EXCEPTION.getCode(), BizCodeEnume.USER_EXIST_EXCEPTION.getMsg());
+        }
+
+        return R.ok();
+    }
+
     @RequestMapping("/coupons")
-    public R test(){
+    public R test() {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setNickname("张三");
         R memberCoupons = couponFeignService.memberCoupons();
