@@ -4,6 +4,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.tim.common.constant.AuthServerConstant;
 import com.tim.common.exception.BizCodeEnume;
 import com.tim.common.utils.R;
+import com.tim.common.vo.MemberRespVo;
 import com.tim.gulimall.auth.feign.MemberFeignService;
 import com.tim.gulimall.auth.feign.ThirdPartFeignServices;
 import com.tim.gulimall.auth.vo.UserLoginVo;
@@ -42,8 +43,14 @@ public class LoginController {
     MemberFeignService memberFeignService;
 
     @GetMapping("/login.html")
-    public String loginPage() {
-        return "login";
+    public String loginPage(HttpSession session) {
+        Object attribute = session.getAttribute(AuthServerConstant.LOGIN_USER);
+        if (attribute == null) {
+            //没登录
+            return "login";
+        } else {
+            return "redirect:http://gulimall.com";
+        }
     }
 
     @ResponseBody
@@ -124,11 +131,10 @@ public class LoginController {
         //远程登录
         R login = memberFeignService.login(vo);
         if (login.getCode() == 0) {
-
-//            MemberResp Vo data = login.getData("data", new TypeReference<MemberRespVo>() {
-//            });
+            MemberRespVo data = login.getData("data", new TypeReference<MemberRespVo>() {
+            });
             ////成功放到session中
-//            session.setAttribute(AuthServerConstant.LOGIN_USER,data);
+            session.setAttribute(AuthServerConstant.LOGIN_USER, data);
             return "redirect:http://gulimall.com";
         } else {
             Map<String, String> errors = new HashMap<>();

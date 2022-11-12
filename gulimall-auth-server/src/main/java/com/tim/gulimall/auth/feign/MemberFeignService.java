@@ -1,6 +1,7 @@
 package com.tim.gulimall.auth.feign;
 
 import com.tim.common.utils.R;
+import com.tim.gulimall.auth.vo.SocialUser;
 import com.tim.gulimall.auth.vo.UserLoginVo;
 import com.tim.gulimall.auth.vo.UserRegistVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -18,4 +19,7 @@ public interface MemberFeignService {
 
     @PostMapping("/member/member/login")
     R login(@RequestBody UserLoginVo vo);
+
+    @PostMapping("/member/member/oauth2/login")
+    R oauthlogin(@RequestBody SocialUser socialUser);
 }

@@ -83,14 +83,18 @@ public class MemberEntity implements Serializable {
 	/**
 	 * 成长值
 	 */
-	private Integer growth;
-	/**
-	 * 启用状态
-	 */
-	private Integer status;
-	/**
-	 * 注册时间
-	 */
-	private Date createTime;
+    private Integer growth;
+    /**
+     * 启用状态
+     */
+    private Integer status;
+    /**
+     * 注册时间
+     */
+    private Date createTime;
+
+    private String socialUid;
+    private String accessToken;
+    private Long expiresIn;
 
 }
