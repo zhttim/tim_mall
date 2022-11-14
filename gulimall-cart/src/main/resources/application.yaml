@@ -12,9 +12,10 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.110.20:8848
-
+  session:
+    store-type: redis
 server:
-  port: 30010
+  port: 40000
 
 logging:
   level:

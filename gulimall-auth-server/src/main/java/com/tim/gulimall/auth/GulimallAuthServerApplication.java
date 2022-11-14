@@ -12,7 +12,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableFeignClients
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class GulimallAuthServerApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(GulimallAuthServerApplication.class, args);
     }
