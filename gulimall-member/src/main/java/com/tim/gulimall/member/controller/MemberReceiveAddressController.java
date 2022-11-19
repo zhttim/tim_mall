@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -16,7 +17,7 @@ import java.util.Map;
  * 会员收货地址
  *
  * @author tim
- * @email 
+ * @email
  * @date 2022-05-12 19:42:35
  */
 @RestController
@@ -25,12 +26,17 @@ public class MemberReceiveAddressController {
     @Autowired
     private MemberReceiveAddressService memberReceiveAddressService;
 
+    @GetMapping("/{memeberId}/addresses")
+    public List<MemberReceiveAddressEntity> getAddress(@PathVariable("memeberId") Long memberId) {
+        return memberReceiveAddressService.getAddress(memberId);
+    }
+
     /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("member:memberreceiveaddress:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = memberReceiveAddressService.queryPage(params);
 
         return R.ok().put("page", page);

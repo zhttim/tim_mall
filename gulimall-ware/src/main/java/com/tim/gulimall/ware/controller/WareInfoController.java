@@ -4,6 +4,7 @@ import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.R;
 import com.tim.gulimall.ware.entity.WareInfoEntity;
 import com.tim.gulimall.ware.service.WareInfoService;
+import com.tim.gulimall.ware.vo.FareVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  * 仓库信息
  *
  * @author tim
- * @email 
+ * @email
  * @date 2022-05-12 19:59:36
  */
 @RestController
@@ -25,12 +26,18 @@ public class WareInfoController {
     @Autowired
     private WareInfoService wareInfoService;
 
+    @GetMapping("/fare")
+    public R getFare(@RequestParam("addrId") Long addrId) {
+        FareVo fare = wareInfoService.getFare(addrId);
+        return R.ok().setData(fare);
+    }
+
     /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("ware:wareinfo:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = wareInfoService.queryPage(params);
 
         return R.ok().put("page", page);

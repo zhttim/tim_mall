@@ -18,3 +18,46 @@
 #      id-type: auto
 #server:
 #  port: 9000
+spring:
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  session:
+    store-type: redis
+
+  thymeleaf:
+    cache: false
+
+  redis:
+    host: 192.168.110.20
+    port: 6379
+
+  rabbitmq:
+    addresses: 192.168.110.20
+    port: 5672
+    virtual-host: /
+    # 开启发送端确认
+    publisher-confirms: true
+    # 开启发送端消息抵达队列的确认
+    publisher-returns: true
+    # 只要抵达队列，以异步发送优先回调我们这个returnconfirm
+    template:
+      mandatory: true
+    # 手动ack消息
+    listener:
+      simple:
+        acknowledge-mode: manual
+
+logging:
+  level:
+    com.tim.gulimall: debug
+
+gulimall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10

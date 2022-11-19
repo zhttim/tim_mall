@@ -16,7 +16,7 @@ import java.util.Map;
  * 订单
  *
  * @author tim
- * @email 
+ * @email
  * @date 2022-05-12 19:53:31
  */
 @RestController
@@ -25,13 +25,32 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @GetMapping("/status/{orderSn}")
+    public R getOrderStatus(@PathVariable("orderSn") String orderSn) {
+        OrderEntity orderEntity = orderService.getOrderByOrderSn(orderSn);
+        return R.ok().setData(orderEntity);
+    }
+
     /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("order:order:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = orderService.queryPage(params);
+
+        return R.ok().put("page", page);
+    }
+
+    /**
+     * 分页查询当前登录用户的所有订单
+     *
+     * @param params
+     * @return
+     */
+    @PostMapping("/listWithItem")
+    public R listWithItem(@RequestBody Map<String, Object> params) {
+        PageUtils page = orderService.queryPageWithItem(params);
 
         return R.ok().put("page", page);
     }

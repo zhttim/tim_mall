@@ -28,8 +28,6 @@ public class SkuSaleAttrValueController {
 
     @GetMapping("/stringlist/{skuId}")
     public List<String> getSkuSaleAttrValues(@PathVariable("skuId") Long skuId) {
-
-
         return skuSaleAttrValueService.getSkuSaleAttrValuesAsStringList(skuId);
     }
 

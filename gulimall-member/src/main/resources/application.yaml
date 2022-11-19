@@ -18,3 +18,20 @@
 #      id-type: auto
 #server:
 #  port: 8000
+spring:
+  thymeleaf:
+    cache: false
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  redis:
+    host: 192.168.110.20
+    port: 6379
+
+  session:
+    store-type: redis
+
+logging:
+  level:
+    com.tim.gulimall: debug

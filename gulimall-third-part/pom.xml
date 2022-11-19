@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tim.gulimall</groupId>
-    <artifactId>gulimall-third-party</artifactId>
+    <artifactId>gulimall-third-part</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gulimall-third-party</name>
-    <description>gulimall-third-party</description>
+    <name>gulimall-third-part</name>
+    <description>gulimall-third-part</description>
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>Greenwich.SR6</spring-cloud.version>
