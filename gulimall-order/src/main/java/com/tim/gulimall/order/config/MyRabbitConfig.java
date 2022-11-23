@@ -1,12 +1,14 @@
 package com.tim.gulimall.order.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +21,16 @@ import java.util.Map;
 public class MyRabbitConfig {
 
     RabbitTemplate rabbitTemplate;
+
+    @Primary
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        this.rabbitTemplate = rabbitTemplate;
+        rabbitTemplate.setMessageConverter(messageConverter());
+        initRabbitTemplate();
+        return rabbitTemplate;
+    }
 
     /**
      * 使用JSON序列化机制，进行消息转换
@@ -139,6 +151,25 @@ public class MyRabbitConfig {
                 Binding.DestinationType.QUEUE,
                 "order-event-exchange",
                 "order.release.other.#",
+                null);
+    }
+
+    @Bean
+    public Queue orderSeckillOrderQueue() {
+        //String name, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
+        return new Queue("order.seckill.order.queue", true, false, false);
+    }
+
+    @Bean
+    public Binding orderSeckillOrderQueueBinding() {
+        /**
+         * String destination, DestinationType destinationType, String exchange, String routingKey,
+         * 			Map<String, Object> arguments
+         */
+        return new Binding("order.seckill.order.queue",
+                Binding.DestinationType.QUEUE,
+                "order-event-exchange",
+                "order.seckill.order",
                 null);
     }
 }

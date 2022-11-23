@@ -12,6 +12,10 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.110.20:8848
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 192.168.110.20:8333
   session:
     store-type: redis
 server:
@@ -20,6 +24,16 @@ server:
 logging:
   level:
     com.tim.gulimall: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+feign:
+  sentinel:
+    enabled: true
 
 gulimall:
   thread:

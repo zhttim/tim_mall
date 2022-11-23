@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -16,7 +17,7 @@ import java.util.Map;
  * 秒杀活动场次
  *
  * @author tim
- * @email 
+ * @email
  * @date 2022-05-12 19:25:04
  */
 @RestController
@@ -25,12 +26,18 @@ public class SeckillSessionController {
     @Autowired
     private SeckillSessionService seckillSessionService;
 
+    @GetMapping("/lates3DaySession")
+    public R getLates3DaySession() {
+        List<SeckillSessionEntity> sessions = seckillSessionService.getLates3DaySession();
+        return R.ok().setData(sessions);
+    }
+
     /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:seckillsession:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = seckillSessionService.queryPage(params);
 
         return R.ok().put("page", page);

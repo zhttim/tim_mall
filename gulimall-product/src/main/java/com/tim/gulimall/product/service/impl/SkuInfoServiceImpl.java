@@ -1,15 +1,19 @@
 package com.tim.gulimall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tim.common.utils.PageUtils;
 import com.tim.common.utils.Query;
+import com.tim.common.utils.R;
 import com.tim.gulimall.product.dao.SkuInfoDao;
 import com.tim.gulimall.product.entity.SkuImagesEntity;
 import com.tim.gulimall.product.entity.SkuInfoEntity;
 import com.tim.gulimall.product.entity.SpuInfoDescEntity;
+import com.tim.gulimall.product.feign.SeckillFeignService;
 import com.tim.gulimall.product.service.*;
+import com.tim.gulimall.product.vo.SeckillInfoVo;
 import com.tim.gulimall.product.vo.SkuItemSaleAttrVo;
 import com.tim.gulimall.product.vo.SkuItemVo;
 import com.tim.gulimall.product.vo.SpuItemAttrGroupVo;
@@ -28,6 +32,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Service("skuInfoService")
 public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> implements SkuInfoService {
 
+    @Autowired
+    SeckillFeignService seckillFeignService;
     @Autowired
     SkuImagesService skuImagesService;
     @Autowired
@@ -134,6 +140,16 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         CompletableFuture<Void> imageFuture = CompletableFuture.runAsync(() -> {
             List<SkuImagesEntity> images = skuImagesService.getImagesBySkuId(skuId);
             skuItemVo.setImages(images);
+        }, executor);
+
+        //3、查询当前sku是否参与秒杀优惠
+        CompletableFuture<Void> secKillFuture = CompletableFuture.runAsync(() -> {
+            R seckillInfo = seckillFeignService.getSkuSeckillInfo(skuId);
+            if (seckillInfo.getCode() == 0) {
+                SeckillInfoVo seckillInfoVo = seckillInfo.getData(new TypeReference<SeckillInfoVo>() {
+                });
+                skuItemVo.setSeckillInfo(seckillInfoVo);
+            }
         }, executor);
 
         //等到所有任务都完成

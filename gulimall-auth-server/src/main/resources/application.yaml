@@ -9,11 +9,25 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.110.20:8848
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 192.168.110.20:8333
   redis:
     host: 192.168.110.20
     port: 6379
   session:
     store-type: redis
+
+feign:
+  sentinel:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 
 server:

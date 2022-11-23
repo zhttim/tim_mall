@@ -15,11 +15,21 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.110.20:8848
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 192.168.110.20:8333
   elasticsearch:
     rest:
       uris: 192.168.110.20:9200
 server:
   port: 12000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 logging:
   level:
