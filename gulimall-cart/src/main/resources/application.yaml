@@ -18,6 +18,14 @@ spring:
         dashboard: 192.168.110.20:8333
   session:
     store-type: redis
+  zipkin:
+    base-url: http://192.168.110.20:9411/
+    discovery-client-enabled: false
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
 server:
   port: 40000
 
